@@ -1,0 +1,21 @@
+.center-content {
+    display:-webkit-flex;  
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15vh;
+}
+
+header { 
+    display: flex; 
+    justify-content: space-between;
+
+    background-color: lightpink;
+    margin: 0px;
+    padding: 2%;
+}
+
+#init-btn {
+    margin-top: 5vh;
+}
