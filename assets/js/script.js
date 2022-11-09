@@ -1,6 +1,8 @@
 var quizContent = document.getElementById('quiz-content'); 
+var initBtn = document.getElementById('init-btn'); 
+var timeEl = document.getElementById('timer');
 
-//Objects containing questions, their answer choices, and the correct answer. 
+//Class to construct quiz objects 
 class quizQuestion {
     constructor(prompt, correctAnswer, choiceA, choiceB, choiceC, choiceD) {
         this.prompt = prompt; 
@@ -11,46 +13,63 @@ class quizQuestion {
         this.choiceD = choiceD; 
         this.answerChoices = [choiceA, choiceB, choiceC, choiceD];
     }
-
-    get getRandomQuestionsArray() {
-        var questionsInOrder = [this.choiceA, this.choiceB, this.choiceC, this.choiceD]; 
-        var questionsLeft = this.answerChoices.length;
-        var quizArray = []; 
-        var stashArray = [];
-        var randQuestion = 0;
-        var selectedQuestion = '';
-
-        while(questionsLeft > 0){
-            randQuestion = Math.floor(Math.random() * questionsInOrder.length);
-            selectedQuestion = questionsInOrder[randQuestion];
-            questionsLeft = quizArray.push(selectedQuestion);
-            questionsInOrder.splice(randQuestion);
-        }
-        console.log(quizArray);
-        return(quizArray); 
-    }
 }
 
+//Objects representing the quiz questions 
 var question1 = new quizQuestion("What is programming?",0,"Pain","Suffering","Torture","Pretty fun"); 
+var question2 = new quizQuestion("JavaScript?", 1, "Ye.","Nah.","YEAH!","Absolutely not."); 
+var question3 = new quizQuestion("What's the air speed velocity of a coconut-laden swallow?",1,"Is it an African swallow?","37km^2/h","Iunno","I fart in your general direction.");
+var question4 = new quizQuestion("Is this a question.",2,"Yes","No","Sure","Why not?");
+var question5 = 
+
+
+//Function to randomize quiz order. 
+function randomizeQuiz(fullQuiz) {
+    var randQuiz = fullQuiz.sort(() => Math.random()-0.5);
+    console.log("Randomized Quiz: ");
+    console.log(randQuiz);
+    return(randQuiz); 
+} 
+
+var fullQuiz = [question1, question2, question3, question4, question5];
+randomizeQuiz(fullQuiz); 
+
+//Function for beginning quiz
+
+
 //Object containing the high score: score and name 
 class scoreBoard {
 }
-//Array of question objects to choose from randomly
 
-// for(i=0; i < questionsLeft; i++){
-//     var randQuestion = Math.floor(Math.random * questionsLeft); 
-
-//     stashArray = quizArray.concat(quizQuestion.questionsArray[randQuestion]);
-//     quizArray = stashArray; 
-//     questionsLeft--; 
-// }
-
-console.log(question1.getRandomQuestionsArray);
 //Array of high score objects
 
 //Initialize quiz on button press
+initBtn.addEventListener("click", function() {
+    quizContent.innerHTML = null;
+    var promptHeader = document.createElement("h2");
+    var answerChoicesUl = document.createElement("ul");
+    promptHeader.textContent = "Hi";
+    quizContent.appendChild(promptHeader);
+    quizContent.appendChild(answerChoicesUl); 
+    setTimer();
+})
 
 //  Begin timer countdown 
+function setTimer(){
+    var timerInterval = setInterval(function() {
+        secondsLeft--;
+        timeEl.textContent = secondsLeft + " seconds left till colorsplosion.";
+    
+        if(secondsLeft === 0) {
+          // Stops execution of action at set interval
+          clearInterval(timerInterval);
+          // Calls function to create and append image
+          sendMessage();
+        }
+    
+      }, 7000);
+}
+
 //  Replace 'quiz-content' div with quiz question 
 //      Insert question header ul 
 //      Insert 4 answer choices li 
