@@ -36,37 +36,33 @@ function randomizeQuiz(fullQuiz) {
 var fullQuiz = [question1, question2, question3, question4, question5];
 var randQuiz = randomizeQuiz(fullQuiz); 
 
-//Object containing the high score: score and name 
-class scoreBoard {
-}
-
 //Array of high score objects
 
 //Initialize quiz on button press
 initBtn.addEventListener("click", function() {
-    buildQuizElements(1);
     setTimer();
+    buildQuizElements(questionsAnswered);
 })
 
 //Resets the quiz-element div and builds the quiz question in its place
-function buildQuizElements(questionIndex) {
+function buildQuizElements(questionsAnswered) {
     quizContent.innerHTML = null;
     var promptHeader = document.createElement("h2");
     var answerChoicesUl = document.createElement("ul");
     answerChoicesUl.id = 'answer-choices';
-    promptHeader.textContent = randQuiz[questionIndex].prompt;
+    promptHeader.textContent = randQuiz[questionsAnswered].prompt;
     quizContent.appendChild(promptHeader); 
     quizContent.appendChild(answerChoicesUl);
     //Create answer choices
-    for(i=0; i < randQuiz[questionIndex].answerChoices.length; i++) {
-        console.log(i);
+    for(i=0; i < randQuiz[questionsAnswered].answerChoices.length; i++) {
         var answerChoice = document.createElement("li");
         var answerButton = document.createElement("button");
-        answerButton.textContent = randQuiz[questionIndex].answerChoices[i]; 
+        answerButton.textContent = randQuiz[questionsAnswered].answerChoices[i]; 
+        answerButton.setAttribute('id', i);
+        answerButton.setAttribute('onClick','checkAnswer(this.id)');
         answerChoice.appendChild(answerButton); 
         quizContent.appendChild(answerChoice);
     }
-    
 }
 
 var secondsLeft = 70; 
@@ -83,25 +79,78 @@ function setTimer(){
       }, 1000);
 }
 
-//  Replace 'quiz-content' div with quiz question 
-//      Insert question header ul 
-//      Insert 4 answer choices li 
-//      Make each li a clickable button
+//Checks to see if the id of the pressed button is equivalent to the 
+function checkAnswer(buttonId) {
+    var feedbackEl = document.createElement("p"); 
+    var penalty = 15; 
+    
+    //Checks for right answer and gives feedback
+    if(buttonId == randQuiz[questionsAnswered].correctAnswer) {
+        console.log("Correct!");
+        feedbackEl.textContent = "Correct!";
+    } else {
+        console.log("Incorrect.");
+        secondsLeft -= penalty; 
+        feedbackEl.textContent = "Incorrect."; 
+    }
 
-//Check for correct answer on button press 
-
-//  If correct:
-//      Display 'Correct!'
-//  If incorrect:
-//      Subtract 15 from the timer/score
-//      Display 'Incorrect!' 
-//  Remove question from available array 
-//  Check to see if any questions remain 
-//  Load new question into 'quiz-content' div 
+    //Increments question counter and checks whether there is another question to build from. 
+    questionsAnswered++;
+    if(questionsAnswered != randQuiz.length){
+        buildQuizElements(questionsAnswered); 
+        quizContent.appendChild(feedbackEl);
+    } else {
+        //endGame();
+    }
+}
 
 //  Game End ()
 //  Retrieve quizResults from localStorage
 //  Check if the current score falls on the scoreboard 
 //  Add current score to scoreboard if necessary 
 //  Load quizResults into 'quiz-content' div 
-//  
+function gameEnd(timeScore) {
+    quizContent.innerHTML = null; 
+    var namePromptEl = document.createElement("h2"); 
+    var nameEnteredEl = document.createElement("input");
+    nameEnteredEl.type = "text"; 
+    nameEnteredEl.id = "name-entered"; 
+
+    var name = document.querySelector("#name-entered").value;
+    
+    if (name === "") {
+        displayMessage("error","Name cannot be blank.");
+    } else {
+        checkHighScore(timeScore, name);
+        displayScoreboard(); 
+    }
+}
+
+function checkHighScore(timeScore, name) {
+    var userScore = {name, timeScore}; 
+    var highScores = [];
+    var updatedScores = []; 
+
+    var highScoresString = localStorage.getItem(HIGHSCORES);
+    var highScores = JSON.parse(highScoresString); 
+
+    if (highScores === null || highScores.length < 10) {
+        highScores.push(userScore); 
+    } else if (highScores.length <== 10) {
+        for(var i=0; i < highScores.length; i++) {
+
+        }
+    }
+}
+
+function displayScoreboard() {
+    var highScores = []; 
+    if(localStorage.highScores != null) {
+        highScores = JSON.parse(localStorage.getItem(highScores));
+    }
+    for (var i=0; i < highScores.length; i++) {
+        
+    }
+    quizContent.innerHTML = null; 
+    var scoreboardEl = document.createElement("ol"); 
+}
