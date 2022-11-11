@@ -24,6 +24,7 @@ var question4 = new quizQuestion("Is this a question.",2,"Yes","No","Sure","Why 
 var question5 = new quizQuestion("Freebie? Pick 2.",2,"Nope","Nope","Yep","Nope");
 
 var questionsAnswered = 0; 
+var finalScore = 0;
 
 //Function to randomize quiz order. 
 function randomizeQuiz(fullQuiz) {
@@ -96,52 +97,73 @@ function checkAnswer(buttonId) {
 
     //Increments question counter and checks whether there is another question to build from. 
     questionsAnswered++;
-    if(questionsAnswered != randQuiz.length){
+    if(questionsAnswered < randQuiz.length){
         buildQuizElements(questionsAnswered); 
         quizContent.appendChild(feedbackEl);
-    } else {
-        //endGame();
+    } else if (questionsAnswered == randQuiz.length){
+        endGame();
     }
 }
 
-//  Game End ()
 //  Retrieve quizResults from localStorage
 //  Check if the current score falls on the scoreboard 
 //  Add current score to scoreboard if necessary 
 //  Load quizResults into 'quiz-content' div 
-function gameEnd(timeScore) {
+function endGame(timeScore) {
+    finalScore = secondsLeft; 
+    timeEl.textContent = "Final Score: " + finalScore; 
+    console.log(finalScore); 
+
+    //Elements for score entry
     quizContent.innerHTML = null; 
     var namePromptEl = document.createElement("h2"); 
     var nameEnteredEl = document.createElement("input");
+    var nameButtonEl = document.createElement("button");
+
+    //Content for elements
+    namePromptEl.textContent = "Please enter your name:";
     nameEnteredEl.type = "text"; 
     nameEnteredEl.id = "name-entered"; 
+    nameButtonEl.id = "name-btn";
+    nameButtonEl.textContent = "Submit Score";
+    nameButtonEl.setAttribute("onclick","checkHighScore(finalScore, document.querySelector('#name-entered').value)");
 
-    var name = document.querySelector("#name-entered").value;
-    
-    if (name === "") {
-        displayMessage("error","Name cannot be blank.");
-    } else {
-        checkHighScore(timeScore, name);
-        displayScoreboard(); 
-    }
+    //Append score submission elements to page
+    quizContent.appendChild(namePromptEl);
+    quizContent.appendChild(nameEnteredEl);
+    quizContent.appendChild(nameButtonEl);
 }
 
-function checkHighScore(timeScore, name) {
-    var userScore = {name, timeScore}; 
+function checkHighScore(finalScore, name) {
+    console.log(finalScore);
+    console.log(name);
+    userScore = {finalScore, name};
     var highScores = [];
-    var updatedScores = []; 
 
-    var highScoresString = localStorage.getItem(HIGHSCORES);
-    var highScores = JSON.parse(highScoresString); 
+    var highScoresString = localStorage.getItem('highScores');
+    var highScores = JSON.parse(highScoresString) ?? []; 
 
     if (highScores === null || highScores.length < 10) {
-        highScores.push(userScore); 
-    } else if (highScores.length <== 10) {
-        for(var i=0; i < highScores.length; i++) {
-
+        highScores.push(userScore);
+        console.log("New highscore: " + JSON.stringify(userScore));
+        localStorage.setItem("highScores",JSON.stringify(highScores));
+    } else if (highScores.length == 10) {
+        console.log(userScore.finalScore);
+        if(userScore.finalScore > highScores[highScores.length-1].finalScore) {
+            highScores.pop();
+            console.log("Popped!");
         }
+        console.log(highScores);
+        for(var i=highScores.length-1; i > 0; i--) {
+            if(userScore.finalScore > highScores[i].finalScore){
+                highScores.splice(i, 0, userScore);
+                break; 
+            }
+        }
+        localStorage.setItem("highScores",JSON.stringify(highScores));
     }
 }
+
 
 function displayScoreboard() {
     var highScores = []; 

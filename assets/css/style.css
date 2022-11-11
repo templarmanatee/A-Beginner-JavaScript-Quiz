@@ -19,3 +19,7 @@ header {
 #init-btn {
     margin-top: 5vh;
 }
+
+ul {
+    list-style-type: none;
+}
