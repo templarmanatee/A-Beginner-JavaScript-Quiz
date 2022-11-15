@@ -24,7 +24,7 @@ var question4 = new quizQuestion("Is this a question.",2,"Yes","No","Sure","Why 
 var question5 = new quizQuestion("Freebie? Pick 2.",2,"Nope","Nope","Yep","Nope");
 
 var questionsAnswered = 0; 
-var finalScore = 0;
+var finalScore; 
 
 //Function to randomize quiz order. 
 function randomizeQuiz(fullQuiz) {
@@ -72,7 +72,7 @@ function setTimer(){
     var timerInterval = setInterval(function() {
         secondsLeft--;
         timeEl.textContent = "Timer: " + secondsLeft;
-    
+
         if(secondsLeft === 0) {
           clearInterval(timerInterval);
           //buildScoreboard();
@@ -105,11 +105,11 @@ function checkAnswer(buttonId) {
     }
 }
 
-//  Retrieve quizResults from localStorage
+//  Retrieve quizResults from local Storage
 //  Check if the current score falls on the scoreboard 
 //  Add current score to scoreboard if necessary 
 //  Load quizResults into 'quiz-content' div 
-function endGame(timeScore) {
+function endGame() {
     finalScore = secondsLeft; 
     timeEl.textContent = "Final Score: " + finalScore; 
     console.log(finalScore); 
@@ -134,45 +134,26 @@ function endGame(timeScore) {
     quizContent.appendChild(nameButtonEl);
 }
 
-function checkHighScore(finalScore, name) {
-    console.log(finalScore);
-    console.log(name);
-    userScore = {finalScore, name};
-    var highScores = [];
+function checkHighScore(timeScore, name) {
+    var highScores = JSON.parse(localStorage.getItem('highScores') || '[]');
+    var userScore = [timeScore, name];
 
-    var highScoresString = localStorage.getItem('highScores');
-    var highScores = JSON.parse(highScoresString) ?? []; 
-
-    if (highScores === null || highScores.length < 10) {
-        highScores.push(userScore);
-        console.log("New highscore: " + JSON.stringify(userScore));
-        localStorage.setItem("highScores",JSON.stringify(highScores));
-    } else if (highScores.length == 10) {
-        console.log(userScore.finalScore);
-        if(userScore.finalScore > highScores[highScores.length-1].finalScore) {
-            highScores.pop();
-            console.log("Popped!");
-        }
-        console.log(highScores);
-        for(var i=highScores.length-1; i > 0; i--) {
-            if(userScore.finalScore > highScores[i].finalScore){
-                highScores.splice(i, 0, userScore);
-                break; 
-            }
-        }
-        localStorage.setItem("highScores",JSON.stringify(highScores));
-    }
+    highScores.push(userScore); 
+    highScores.sort((a, b) => parseFloat(b[0]) - parseFloat(a[0]));
+    if(highScores.length > 10){
+        highScores.length = 10;
+    } 
+    localStorage.setItem("highScores",JSON.stringify(highScores));
 }
 
-
 function displayScoreboard() {
-    var highScores = []; 
-    if(localStorage.highScores != null) {
-        highScores = JSON.parse(localStorage.getItem(highScores));
-    }
-    for (var i=0; i < highScores.length; i++) {
-        
-    }
+    highScores = JSON.parse(localStorage.getItem(highScores) || '[]');
     quizContent.innerHTML = null; 
     var scoreboardEl = document.createElement("ol"); 
+    //Probably some classes for the scoreboardEl
+    quizContent.appendChild(scoreboardEl); 
+    for(var i=0; i < highScores.length; i++) {
+        var highScoreEl = document.createElement("li"); 
+        highScoreEl.textContent = "Score: " + highScores[i][0] + "  " + highScores[i][1];
+    }
 }
