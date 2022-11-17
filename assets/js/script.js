@@ -53,7 +53,7 @@ function buildQuizElements(questionsAnswered) {
 
     quizContent.appendChild(promptHeader); 
     quizContent.appendChild(answerChoicesUl);
-    
+
     //Create answer choices
     for(i=0; i < randQuiz[questionsAnswered].answerChoices.length; i++) {
         var answerChoice = document.createElement("li");
@@ -140,6 +140,10 @@ function endGame() {
 
 function checkHighScore(timeScore, name) {
     var highScores = JSON.parse(localStorage.getItem('highScores') || '[]');
+
+    if(name === "") {
+        name = "Anonymous";
+    }
     var userScore = [timeScore, name];
 
     highScores.push(userScore); 
@@ -162,7 +166,6 @@ function displayScoreboard() {
     for(var i=0; i < highScores.length; i++) {
         var highScoreEl = document.createElement("li");
         highScoreEl.textContent = "Score: " + highScores[i][0] + "  " + highScores[i][1];
-        console.log(highScoreEl.textContent);
         scoreboardEl.append(highScoreEl);
     }
     quizContent.appendChild(scoreboardEl);
