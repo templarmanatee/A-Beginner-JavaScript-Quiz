@@ -37,8 +37,6 @@ function randomizeQuiz(fullQuiz) {
 var fullQuiz = [question1, question2, question3, question4, question5];
 var randQuiz = randomizeQuiz(fullQuiz); 
 
-//Array of high score objects
-
 //Initialize quiz on button press
 initBtn.addEventListener("click", function() {
     setTimer();
@@ -52,8 +50,10 @@ function buildQuizElements(questionsAnswered) {
     var answerChoicesUl = document.createElement("ul");
     answerChoicesUl.id = 'answer-choices';
     promptHeader.textContent = randQuiz[questionsAnswered].prompt;
+
     quizContent.appendChild(promptHeader); 
     quizContent.appendChild(answerChoicesUl);
+    
     //Create answer choices
     for(i=0; i < randQuiz[questionsAnswered].answerChoices.length; i++) {
         var answerChoice = document.createElement("li");
@@ -61,6 +61,7 @@ function buildQuizElements(questionsAnswered) {
         answerButton.textContent = randQuiz[questionsAnswered].answerChoices[i]; 
         answerButton.setAttribute('id', i);
         answerButton.setAttribute('onClick','checkAnswer(this.id)');
+        answerChoice.style.listStyle = 'none';
         answerChoice.appendChild(answerButton); 
         quizContent.appendChild(answerChoice);
     }
@@ -75,7 +76,10 @@ function setTimer(){
 
         if(secondsLeft === 0) {
           clearInterval(timerInterval);
-          //buildScoreboard();
+          endGame();
+        }
+        if(questionsAnswered === 5) {
+            clearInterval(timerInterval);
         }
       }, 1000);
 }
@@ -118,12 +122,12 @@ function endGame() {
     quizContent.innerHTML = null; 
     var namePromptEl = document.createElement("h2"); 
     var nameEnteredEl = document.createElement("input");
-    var nameButtonEl = document.createElement("button");
+    var nameButtonEl = document.createElement("button"); 
 
     //Content for elements
     namePromptEl.textContent = "Please enter your name:";
-    nameEnteredEl.type = "text"; 
-    nameEnteredEl.id = "name-entered"; 
+    nameEnteredEl.type = "text";
+    nameEnteredEl.id = "name-entered";
     nameButtonEl.id = "name-btn";
     nameButtonEl.textContent = "Submit Score";
     nameButtonEl.setAttribute("onclick","checkHighScore(finalScore, document.querySelector('#name-entered').value)");
@@ -144,16 +148,23 @@ function checkHighScore(timeScore, name) {
         highScores.length = 10;
     } 
     localStorage.setItem("highScores",JSON.stringify(highScores));
+    displayScoreboard();
 }
 
 function displayScoreboard() {
-    highScores = JSON.parse(localStorage.getItem(highScores) || '[]');
-    quizContent.innerHTML = null; 
-    var scoreboardEl = document.createElement("ol"); 
-    //Probably some classes for the scoreboardEl
-    quizContent.appendChild(scoreboardEl); 
+    quizContent.innerHTML = null;
+    var scoreboardEl = document.createElement("ol");
+    var returnBtnEl = document.createElement("button"); 
+    returnBtnEl.textContent = 'Return to Game';
+    returnBtnEl.setAttribute("onclick","location.reload()");
+
+    var highScores = JSON.parse(localStorage.getItem('highScores'));
     for(var i=0; i < highScores.length; i++) {
-        var highScoreEl = document.createElement("li"); 
+        var highScoreEl = document.createElement("li");
         highScoreEl.textContent = "Score: " + highScores[i][0] + "  " + highScores[i][1];
+        console.log(highScoreEl.textContent);
+        scoreboardEl.append(highScoreEl);
     }
+    quizContent.appendChild(scoreboardEl);
+    quizContent.appendChild(returnBtnEl);
 }
