@@ -1,5 +1,30 @@
-# UNCC-Bootcamp-Challenge-4
-Web APIs Coding Quiz
+# Web APIs Coding Quiz
+UNCC Bootcamp Challenge 4
+Dylan Freeman
+
+## Project Review 
+
+This project was created to test programming students about their knowledge of JavaScript. 
+
+Over the course of this creating this project, I learned how to traverse the DOM and manipulate elements using the browser's APIs. 
+
+I also learned to use localStorage and how to correctly store data within the user's browser. This gave me the most trouble until I stored the high scores as arrays rather than objects. This was the primary issue I had to debug. 
+
+## Usage
+
+The user is first met with the landing page, given a brief explanation and the choice of 2 buttons: one displays the local highscores, the other begins the quiz. 
+
+Once the quiz begins, the user has 70 seconds to answer all 5 questions by clicking on the answer choice buttons. A wrong answer will penalize the user by 15 seconds. 
+
+When either the timer runs out or the user has answered all questions, the screen will prompt the user to enter their chosen name.
+
+The scoreboard will then be displayed with the top 10 scores, along with a button to refresh the page and begin the quiz again. 
+
+## Installation
+
+Github Pages: https://templarmanatee.github.io/UNCC-Bootcamp-Challenge-4/ 
+
+Github Repository: https://github.com/templarmanatee/UNCC-Bootcamp-Challenge-3
 
 ## User Story
 
@@ -24,3 +49,8 @@ THEN the game is over
 WHEN the game is over
 THEN I can save my initials and my score
 ```
+## Screenshots 
+
+* ![Landing Page](.\assets\screenshots\quizSS1.png)
+* ![Quiz Item](.\assets\screenshots\quizSS2.png)
+* ![Scoreboard](.\assets\screenshots\quizSS3.png)

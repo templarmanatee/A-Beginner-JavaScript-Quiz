@@ -17,11 +17,11 @@ class quizQuestion {
 }
 
 //Objects representing the quiz questions 
-var question1 = new quizQuestion("What is programming?",0,"Pain","Suffering","Torture","Pretty fun"); 
-var question2 = new quizQuestion("JavaScript?", 1, "Ye.","Nah.","YEAH!","Absolutely not."); 
-var question3 = new quizQuestion("What's the air speed velocity of a coconut-laden swallow?",1,"Is it an African swallow?","37km^2/h","Iunno","I fart in your general direction.");
-var question4 = new quizQuestion("Is this a question.",2,"Yes","No","Sure","Why not?");
-var question5 = new quizQuestion("Freebie? Pick 2.",2,"Nope","Nope","Yep","Nope");
+var question1 = new quizQuestion("Is JavaScript related to Java?",0,"No","Maybe","Yes","It's a child language"); 
+var question2 = new quizQuestion("What is a sequence of characters in JavaScript?", 3, "Line","Sentence","Text input","String"); 
+var question3 = new quizQuestion("How do you stop a for() loop?",1,"stop();","break();","return();","for(stop);");
+var question4 = new quizQuestion("What denotes an array?",2,"{}","||","[]","()");
+var question5 = new quizQuestion("Freebie? Pick 2. (Zero-indexed)",2,"Nope","Nope","Yep","Nope");
 
 var questionsAnswered = 0; 
 var finalScore; 
