@@ -51,6 +51,6 @@ THEN I can save my initials and my score
 ```
 ## Screenshots 
 
-* ![Landing Page](.\assets\screenshots\quizSS1.png)
-* ![Quiz Item](.\assets\screenshots\quizSS2.png)
-* ![Scoreboard](.\assets\screenshots\quizSS3.png)
+* ![Landing Page](/assets/screenshots/quizSS1.png)
+* ![Quiz Item](/assets/screenshots/quizSS2.png)
+* ![Scoreboard](/assets/screenshots/quizSS3.png)
