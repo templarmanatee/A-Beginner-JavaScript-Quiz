@@ -24,7 +24,7 @@ The scoreboard will then be displayed with the top 10 scores, along with a butto
 
 Github Pages: https://templarmanatee.github.io/UNCC-Bootcamp-Challenge-4/ 
 
-Github Repository: https://github.com/templarmanatee/UNCC-Bootcamp-Challenge-3
+Github Repository: https://github.com/templarmanatee/UNCC-Bootcamp-Challenge-4/
 
 ## User Story
 
